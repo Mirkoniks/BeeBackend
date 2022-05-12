@@ -7,6 +7,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddEntityFrameworkSqlite().AddDbContext<BeesDbContext>();
+
+using(var client = new BeesDbContext())
+{
+    client.Database.EnsureCreated();
+}
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
