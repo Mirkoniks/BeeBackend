@@ -1,27 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Collections.Generic;
-
+using Microsoft.EntityFrameworkCore;
+ 
 namespace Beebackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class BeeController : ControllerBase
 {
-    public BeeController()
+    private readonly BeesDbContext dbContext;
+    private readonly IInfoService infoService;
+    public BeeController(BeesDbContext dbContext, IInfoService infoService)
     {
-        
+        this.dbContext = dbContext;
+        this.infoService = infoService;
+
     }
 
     [HttpPost(Name = "PostData")]
-    public ActionResult<IEnumerable<int>> PostData([FromQuery] int peopleCount, int polution)
+    public ActionResult PostData([FromQuery] int peopleCount, int polution)
     {
-        List<int> data = new List<int>();
+        infoService.Add(peopleCount, polution);
 
-        data.Add(peopleCount);
+        Console.WriteLine(dbContext.Infos.FirstOrDefault().PeopleCount);
 
-        data.Add(polution);
-
-        return data;
+        return StatusCode(200);
     }
 }

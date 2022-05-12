@@ -9,6 +9,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddEntityFrameworkSqlite().AddDbContext<BeesDbContext>();
 
+builder.Services.AddTransient<IInfoService, InfoService>();
+
 using(var client = new BeesDbContext())
 {
     client.Database.EnsureCreated();
