@@ -12,15 +12,16 @@ public class InfoService : IInfoService
 
         info.PeopleCount = peopleCount;
         info.Polution = polution;
+        info.Date = DateTime.Today;
 
         await dbContext.Infos.AddAsync(info);
 
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<Info> GetByDate(DateTime date)
+    public async Task<InfoDTO> GetByDate(DateTime date)
     {
-       Info info = new Info();
+       InfoDTO info = new InfoDTO();
 
         var result = dbContext.Infos
                                 .Where(i => i.Date.Year == date.Year)
@@ -30,6 +31,7 @@ public class InfoService : IInfoService
 
         info.PeopleCount = result.PeopleCount;
         info.Polution = result.Polution;
+
 
         return info;
     }

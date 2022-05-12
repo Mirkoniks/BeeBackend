@@ -18,7 +18,7 @@ public class BeeController : ControllerBase
 
     }
 
-    [HttpPost(Name = "PostData")]
+    [HttpPost("PostData")]
     public ActionResult PostData([FromQuery] int peopleCount, int polution)
     {
         infoService.Add(peopleCount, polution);
@@ -26,5 +26,15 @@ public class BeeController : ControllerBase
         Console.WriteLine(dbContext.Infos.FirstOrDefault().PeopleCount);
 
         return StatusCode(200);
+    }
+
+    [HttpGet("GetData")]
+    public async Task<ActionResult<InfoDTO>> GetData([FromQuery] int year, int month, int day)
+    {
+        DateTime date = new DateTime(year, month,day);
+
+        InfoDTO info = await infoService.GetByDate(date);
+
+        return info;
     }
 }
